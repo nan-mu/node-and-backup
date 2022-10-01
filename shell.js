@@ -1,10 +1,16 @@
-import { exec } from "shelljs";
+import child_process from 'child_process';
 
-export const shell = (com) => {
+var exec = (com) => {//简单封装一下
     return new Promise((resolve, reject) => {
-        let child = exec(com, { async: true });
-        child.stdout.on('data', function (data) {
-            resolve(data);
+        child_process.exec(com, function (error, stdout, stderr) {
+            if (error) {
+                console.error('error: ' + error);
+                reject(stderr);
+            }else{
+                resolve(stdout);
+            }
         });
-    })
+    });
 }
+
+export { exec };
